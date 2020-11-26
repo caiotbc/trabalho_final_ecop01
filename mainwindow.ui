@@ -29,28 +29,6 @@
    <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QLabel" name="pokebola">
-    <property name="geometry">
-     <rect>
-      <x>230</x>
-      <y>170</y>
-      <width>18</width>
-      <height>17</height>
-     </rect>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>18</width>
-      <height>17</height>
-     </size>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-image:url(:/new/prefix1/recursos/sprites/testing/pokeball.png)</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QGraphicsView" name="graphicsView">
     <property name="geometry">
      <rect>
@@ -79,8 +57,6 @@
      </size>
     </property>
    </widget>
-   <zorder>graphicsView</zorder>
-   <zorder>pokebola</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

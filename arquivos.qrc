@@ -4,5 +4,6 @@
         <file>recursos/sprites/testing/sprites.png</file>
         <file>recursos/sprites/mapas/petalburg_woods.png</file>
         <file>recursos/sprites/movement/male.png</file>
+        <file>recursos/sprites/mapas/petalburg_woods.dat</file>
     </qresource>
 </RCC>

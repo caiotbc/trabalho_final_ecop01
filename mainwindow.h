@@ -22,20 +22,20 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-protected:
+    void set_scene(QGraphicsScene &a);
     void keyPressEvent(QKeyEvent *e);
     void keyReleaseEvent(QKeyEvent *e);
+protected:
+
+public slots:
+    void temporizador();
+
 private:
     Ui::MainWindow *ui;
-    QGraphicsScene *cena;
-
-    sprite *Brendan;
-    sprite *Banana;
-
-    float cena_x,cena_y,cena_largura,cena_altura;
     int x_1 = 0;
     int y_1 = 0;
 
     int tecla, tecla_anteior, pressionada;
+    QTimer *temporizador_principal;
 };
 #endif // MAINWINDOW_H

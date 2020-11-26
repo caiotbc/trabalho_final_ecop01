@@ -13,7 +13,7 @@ sprite::sprite(QObject *parent, float i_c) : QObject(parent)
     altura = 21;
 
     //refresh rate da animação
-    timer->start(250);
+    //timer->start(250);
 
     connect(timer, &QTimer::timeout, this , &sprite::atualiza_imagem); //Conectar o timer na função de atualização
 
