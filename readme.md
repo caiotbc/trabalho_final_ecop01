@@ -7,3 +7,5 @@ Créditos dos sprites:
 https://www.spriters-resource.com/submitter/soulcaliburfan/
 
 https://www.spriters-resource.com/submitter/Andrew+the+Hedgehog/
+
+https://www.spriters-resource.com/submitter/Satoshi-kun/
