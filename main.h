@@ -10,6 +10,7 @@ void anda_boneco();
 void loop_principal();
 void abre_arquivo(std::string a);
 void imprime_matriz(int n, int m);
+void checa_posicao_valida(int a);
 
 int x_1; //posição do personagem no mapa
 int y_1;

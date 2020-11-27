@@ -2,6 +2,9 @@
 #define VELOCIDADE_ANIMACAO 100
 #define VELOCIDADE_PERSONAGEM 1
 
+QColor color;
+QImage image;
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -10,8 +13,8 @@ int main(int argc, char *argv[])
 
     estado_boneco = 0;
     andando = 0;
-    x_1 = 200;
-    y_1 = 200;
+    x_1 = 238;
+    y_1 = 59;
 
     int cena_x = 0;
     int cena_y = 0;
@@ -31,8 +34,9 @@ int main(int argc, char *argv[])
     cena->addItem(boneco);
     boneco->setPos(200,200);
 
-    abre_arquivo(":/new/prefix1/recursos/sprites/mapas/petalburg_woods.dat");
-    imprime_matriz(4,4);
+    QPixmap *teste = new QPixmap(":/new/prefix1/recursos/sprites/mapas/petalburg_woods_obstaculos.png");
+    image = teste->toImage();
+
     return a.exec();
 }
 
@@ -57,9 +61,9 @@ void abre_arquivo(std::string a)
         QTextStream in(&arquivo);
         int n=0,m=0;
         QString line = in.readLine();
-        n = line.toInt();
-        line = in.readLine();
         m = line.toInt();
+        line = in.readLine();
+        n = line.toInt();
         qDebug()<<n<<m;
 
         for(int i = 0 ; i < n ; i++)
@@ -85,6 +89,32 @@ void loop_principal()
     anda_boneco();
 }
 
+void checa_posicao_valida(int a)
+{
+    color.setRgb(image.pixel(x_1,y_1));
+    qDebug()<<color.value();
+    while (color.value()==0)
+    {
+        switch (a)
+        {
+            case 1:
+            y_1-=VELOCIDADE_PERSONAGEM;
+            break;
+            case 2:
+            y_1+=VELOCIDADE_PERSONAGEM;
+            break;
+            case 3:
+            x_1+=VELOCIDADE_PERSONAGEM;
+            break;
+            case 4:
+            x_1-=VELOCIDADE_PERSONAGEM;
+            break;
+        }
+        color.setRgb(image.pixel(x_1,y_1));
+        qDebug()<<color.value();
+    }
+}
+
 void anda_boneco()
 {
     if(!andando && estado_boneco>0) //Se o boneco estiver parado, ativa a animação de movimento
@@ -103,18 +133,22 @@ void anda_boneco()
         case 83:
             y_1+=VELOCIDADE_PERSONAGEM;
             boneco->set_orientation("down");
+            checa_posicao_valida(1);
             break;
         case 87:
             y_1-=VELOCIDADE_PERSONAGEM;
             boneco->set_orientation("up");
+            checa_posicao_valida(2);
             break;
         case 65:
             x_1-=VELOCIDADE_PERSONAGEM;
             boneco->set_orientation("left");
+            checa_posicao_valida(3);
             break;
         case 68:
             x_1+=VELOCIDADE_PERSONAGEM;
             boneco->set_orientation("right");
+            checa_posicao_valida(4);
             break;
     }
     boneco->setPos(x_1,y_1);
