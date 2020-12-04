@@ -1,22 +1,29 @@
 #include "main.h"
+#include "funcoes_aux.h"
+
 #define VELOCIDADE_ANIMACAO 100
 #define VELOCIDADE_PERSONAGEM 1
-#define DIFICULDADE 20
 
-QColor color;
-QImage image;
 QGraphicsScene *cena;
+extern pokemon_catalogo_t poke_cat[25];
+pokedex mochila_jogador[2];
 
 int main(int argc, char *argv[])
 {
+    srand(time(NULL));
+    qDebug() << conecta_banco_de_dados();
+    carrega_pokemons();
     QApplication a(argc, argv);
     MainWindow w;
-    w.show();
+    QPixmap fundo;
 
-    srand(time(NULL));
+    w.show();
+    mapa_ativado=0;
+
+    poke_atual = 0;
     estado_boneco = 0;
     andando = 0;
-    x_1 = 238;
+    x_1 = 238; //Coordenadas de spawn
     y_1 = 59;
 
     int cena_x = 0;
@@ -27,85 +34,77 @@ int main(int argc, char *argv[])
 
 
     cena = new QGraphicsScene(cena_x,cena_y,cena_largura,cena_altura);
-
-    QPixmap fundo(":/new/prefix1/recursos/sprites/mapas/petalburg_woods.png"); //background
-
     w.set_scene(*cena); //configura a cena
 
-    boneco = new sprite(&w,0);
+    fundo.load(":/new/prefix1/recursos/images/login.png");
     cena->setBackgroundBrush(fundo);
-    cena->addItem(boneco);
-    boneco->setPos(200,200);
 
-    QPixmap *teste = new QPixmap(":/new/prefix1/recursos/sprites/mapas/petalburg_woods_obstaculos.png");
-    image = teste->toImage();
+    pokemon_spr = new QPokemon(&w);
+    pokemon_spr_2 = new QPokemon(&w);
+    pokemon_spr_3 = new QPokemon(&w);
+
+    boneco = new sprite(&w,0); //sprite
+
+    cena->addItem(pokemon_spr);
+    pokemon_spr->setPos(562,299);
+
+    cena->addItem(pokemon_spr_2);
+    pokemon_spr_2->setPos(95,612);
+    pokemon_spr_2->set_imagem_x(416);
+    pokemon_spr_2->set_imagem_y(2078);
+
+    cena->addItem(pokemon_spr_3);
+    pokemon_spr_3->setPos(432,612);
+    pokemon_spr_3->set_imagem_x(416);
+    pokemon_spr_3->set_imagem_y(2078);
+
+    QPixmap *obs= new QPixmap(":/new/prefix1/recursos/sprites/mapas/petalburg_woods_obstaculos.png");
+    mapa_obstaculos = obs->toImage();
 
     return a.exec();
 }
 
-void imprime_matriz(int n, int m)
+void loop_principal()
 {
-    for(int i =0 ; i < n ; i++)
+    qDebug()<<estado_boneco;
+    if(mapa_ativado)
     {
-        for(int j = 0; j < m ;j++)
-        {
-            qDebug("%d",mapa_petalburg_obstaculos[i][j]);
-        }
-    }
-}
-
-void abre_arquivo()
-{
-    QFile arquivo(":/new/prefix1/recursos/sprites/mapas/petalburg_woods.dat");
-    //arquivo.open(QIODevice::ReadWrite);
-
-    if(arquivo.open(QIODevice::ReadOnly | QIODevice::Text))
-    {
-        QTextStream in(&arquivo);
-        int n=0,m=0;
-        QString line = in.readLine();
-        m = line.toInt();
-        line = in.readLine();
-        n = line.toInt();
-        qDebug()<<n<<m;
-
-        for(int i = 0 ; i < n ; i++)
-        {
-            line = in.readLine();
-            for(int j = 0 ; j < m ; j++)
-            {
-                mapa_petalburg_obstaculos[i][j] = line[j].digitValue();
-                //qDebug()<<line[j];
-            }
-            //qDebug()<<line;
-        }
+        mapa_ativado=0;
+        inicializa_mapa();
     }
     else
     {
-        qDebug()<<"Arquivo nao abriu";
+        if(poke_atual<0)
+            poke_atual=0;
+        switch (poke_cat[poke_atual].nivel_evolui)
+        {
+            case 10:
+                evolucao_poke = 1;
+                break;
+            case 20:
+                evolucao_poke = 2;
+                break;
+            case -1:
+                evolucao_poke = 3;
+                break;
+        }
+        pokemon_spr->set_imagem_x(poke_cat[poke_atual].imagem_x);
+        pokemon_spr->set_imagem_y(poke_cat[poke_atual].imagem_y);
+        pokemon_spr->atualiza_imagem();
     }
-    arquivo.close();
-}
-
-void loop_principal()
-{
     anda_jogador();
-    if(color.value()==128 && andando && ta_na_hora())
+    if(cor_chao.value()==128 && andando && ta_na_hora())
     {
         qDebug()<<"VAMO LUTA";
     }
 }
 
-bool ta_na_hora()
-{
-    return rand()%100<(DIFICULDADE/5);
-}
 
 void checa_posicao_valida(int a)
 {
-    color.setRgb(image.pixel(x_1,y_1));
-    qDebug()<<color.value();
-    while (color.value()==0)
+    cor_chao.setRgb(mapa_obstaculos.pixel(x_1,y_1));
+    qDebug()<<cor_chao.value();
+    while (cor_chao.value()==0) //Detecta parede
     {
         switch (a)
         {
@@ -122,8 +121,8 @@ void checa_posicao_valida(int a)
             x_1-=VELOCIDADE_PERSONAGEM;
             break;
         }
-        color.setRgb(image.pixel(x_1,y_1));
-        qDebug()<<color.value();
+        cor_chao.setRgb(mapa_obstaculos.pixel(x_1,y_1));
+        qDebug()<<cor_chao.value();
     }
 }
 
@@ -139,7 +138,6 @@ void anda_jogador()
         andando = 0;
         boneco->stop_timer();
     }
-    //qDebug()<<estado_boneco;
     switch (estado_boneco)
     {
         case 83:
@@ -164,4 +162,22 @@ void anda_jogador()
             break;
     }
     boneco->setPos(x_1,y_1);
+}
+
+void inicializa_mapa()
+{
+    QPixmap fundo;
+    fundo.load(":/new/prefix1/recursos/sprites/mapas/petalburg_woods.png");
+    cena->setBackgroundBrush(fundo);
+    cena->addItem(boneco);
+    cena->removeItem(pokemon_spr);
+    cena->removeItem(pokemon_spr_2);
+    cena->removeItem(pokemon_spr_3);
+    boneco->setPos(200,200);
+}
+
+void modo_de_batalha()
+{
+    QPixmap fundo;
+    fundo.load(":/new/prefix1/recursos/sprites/mapas/petalburg_woods.png");
 }

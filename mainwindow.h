@@ -10,6 +10,8 @@
 #include <QKeyEvent>
 #include <QGraphicsScene>
 #include "sprite.h"
+#include "pokemons.h"
+#include "qpokemon.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
