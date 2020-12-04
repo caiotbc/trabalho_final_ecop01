@@ -1,9 +1,11 @@
 #include "main.h"
 #define VELOCIDADE_ANIMACAO 100
 #define VELOCIDADE_PERSONAGEM 1
+#define DIFICULDADE 20
 
 QColor color;
 QImage image;
+QGraphicsScene *cena;
 
 int main(int argc, char *argv[])
 {
@@ -11,6 +13,7 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
+    srand(time(NULL));
     estado_boneco = 0;
     andando = 0;
     x_1 = 238;
@@ -22,7 +25,7 @@ int main(int argc, char *argv[])
     int cena_largura =768;
     int cena_altura = 700;
 
-    QGraphicsScene *cena;
+
     cena = new QGraphicsScene(cena_x,cena_y,cena_largura,cena_altura);
 
     QPixmap fundo(":/new/prefix1/recursos/sprites/mapas/petalburg_woods.png"); //background
@@ -51,7 +54,7 @@ void imprime_matriz(int n, int m)
     }
 }
 
-void abre_arquivo(std::string a)
+void abre_arquivo()
 {
     QFile arquivo(":/new/prefix1/recursos/sprites/mapas/petalburg_woods.dat");
     //arquivo.open(QIODevice::ReadWrite);
@@ -86,7 +89,16 @@ void abre_arquivo(std::string a)
 
 void loop_principal()
 {
-    anda_boneco();
+    anda_jogador();
+    if(color.value()==128 && andando && ta_na_hora())
+    {
+        qDebug()<<"VAMO LUTA";
+    }
+}
+
+bool ta_na_hora()
+{
+    return rand()%100<(DIFICULDADE/5);
 }
 
 void checa_posicao_valida(int a)
@@ -115,7 +127,7 @@ void checa_posicao_valida(int a)
     }
 }
 
-void anda_boneco()
+void anda_jogador()
 {
     if(!andando && estado_boneco>0) //Se o boneco estiver parado, ativa a animação de movimento
     {

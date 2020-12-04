@@ -4,13 +4,16 @@
 #include <QTimer>
 #include <fstream>
 #include <QFile>
+#include <time.h>
 #include "mainwindow.h"
+#include "pokemons.h"
 
-void anda_boneco();
+void anda_jogador();
 void loop_principal();
 void abre_arquivo(std::string a);
 void imprime_matriz(int n, int m);
 void checa_posicao_valida(int a);
+bool ta_na_hora();
 
 int x_1; //posição do personagem no mapa
 int y_1;

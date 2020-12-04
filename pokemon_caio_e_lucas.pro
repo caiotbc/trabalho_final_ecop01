@@ -11,11 +11,13 @@ CONFIG += c++11
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    pokemons.c \
     sprite.cpp
 
 HEADERS += \
     main.h \
     mainwindow.h \
+    pokemons.h \
     sprite.h
 
 FORMS += \

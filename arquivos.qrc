@@ -6,5 +6,6 @@
         <file>recursos/sprites/movement/male.png</file>
         <file>recursos/sprites/mapas/petalburg_woods.dat</file>
         <file>recursos/sprites/mapas/petalburg_woods_obstaculos.png</file>
+        <file>recursos/sprites/mapas/a51.png</file>
     </qresource>
 </RCC>
