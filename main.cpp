@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
 
     w.show();
     mapa_ativado=0;
+    modo_de_jogo = 0;
 
     poke_atual = 0;
     estado_boneco = 0;
@@ -93,9 +94,10 @@ void loop_principal()
         pokemon_spr->atualiza_imagem();
     }
     anda_jogador();
-    if(cor_chao.value()==128 && andando && ta_na_hora())
+    if(cor_chao.value()==128 && andando && ta_na_hora() && modo_de_jogo==0)
     {
         qDebug()<<"VAMO LUTA";
+        modo_de_batalha();
     }
 }
 
@@ -128,6 +130,8 @@ void checa_posicao_valida(int a)
 
 void anda_jogador()
 {
+    if(modo_de_jogo==1)
+        return;
     if(!andando && estado_boneco>0) //Se o boneco estiver parado, ativa a animação de movimento
     {
         andando = 1;
@@ -178,6 +182,9 @@ void inicializa_mapa()
 
 void modo_de_batalha()
 {
+    modo_de_jogo = 1;
     QPixmap fundo;
-    fundo.load(":/new/prefix1/recursos/sprites/mapas/petalburg_woods.png");
+    fundo.load(":/new/prefix1/recursos/sprites/battle/castle_2.jpg");
+    cena->removeItem(boneco);
+    cena->setBackgroundBrush(fundo);
 }

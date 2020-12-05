@@ -9,8 +9,9 @@
         <file>recursos/sprites/mapas/a51.png</file>
         <file>recursos/sprites/pokemons/generation1.png</file>
         <file>recursos/images/login.png</file>
-        <file>recursos/sprites/battle/back_zelda.jpg</file>
         <file>recursos/sprites/battle/background.jpg</file>
         <file>recursos/sprites/battle/bases.png</file>
+        <file>recursos/sprites/battle/castle.png</file>
+        <file>recursos/sprites/battle/castle_2.jpg</file>
     </qresource>
 </RCC>

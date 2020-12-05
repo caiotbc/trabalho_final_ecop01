@@ -32,6 +32,6 @@ int andando; //variável para saber se o personagem está andando
 int mapa_ativado;
 int poke_atual;
 int evolucao_poke;
-
+int modo_de_jogo;
 
 #endif // MAIN_H
