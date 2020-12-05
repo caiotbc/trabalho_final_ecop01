@@ -9,7 +9,15 @@ extern int mapa_ativado;
 extern pokedex mochila_jogador[2];
 extern pokemon_catalogo_t poke_cat[25];
 extern QPokemon *pokemon_spr_2;
+extern QPokemon *pokemon_spr;
 extern QPokemon *pokemon_spr_3;
+extern QPokemon *pokemon_spr_4;
+extern QPokemon *pokemon_spr_5;
+
+extern int modo_de_jogo;
+extern pokedex pokemon_selvagem;
+int pokemon_lutando = 0;
+void inicializa_mapa();
 
 void MainWindow::set_scene(QGraphicsScene &a)
 {
@@ -30,6 +38,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->nome_poke_4->setStyleSheet("color : rgb(255, 255, 255);\nfont: 14pt \"Pokemon Generation 1\";");
     ui->nome_poke_5->setStyleSheet("color : rgb(255, 255, 255);\nfont: 14pt \"Pokemon Generation 1\";");
     ui->nome_poke_6->setStyleSheet("color : rgb(255, 255, 255);\nfont: 14pt \"Pokemon Generation 1\";");
+    ui->nome_poke_7->setStyleSheet("color : rgb(0, 0, 0);\nfont: 12pt \"Pokemon Generation 1\";");
+    ui->nome_poke_8->setStyleSheet("color : rgb(0, 0, 0);\nfont: 12pt \"Pokemon Generation 1\";");
+    ui->health_1->setStyleSheet("border-image: url(:/new/prefix1/recursos/sprites/battle/vida.png);");
+    ui->health_1->setVisible(0);
+    ui->nome_poke_7->setVisible(0);
+    ui->nome_poke_8->setVisible(0);
+    ui->victory->setVisible(0);
 }
 
 void MainWindow::temporizador()
@@ -39,6 +54,62 @@ void MainWindow::temporizador()
     ui->nome_poke_2->setText(poke_cat[poke_atual].tipo);
     ui->nome_poke_3->setText(QString::number(poke_cat[poke_atual].geracao));
     ui->nome_poke_4->setText(QString::number(evolucao_poke));
+    if(modo_de_jogo==1)
+    {
+        ui->health_1->setVisible(1);
+        ui->health_1->setFixedSize(500,40);
+
+        ui->nome_poke_7->setVisible(1);
+        ui->nome_poke_8->setVisible(1);
+
+        QString texto_batalha, texto_oponente;
+        texto_batalha = "Hora da batalha! Aperte G para atacar\n";
+        texto_batalha+="\nSeu Pokemon: \n" + poke_cat[mochila_jogador[pokemon_lutando].posicao].nome;
+        texto_batalha+="\nHP:" + QString::number(mochila_jogador[pokemon_lutando].hp);
+        texto_batalha+="\nNivel: " + QString::number(mochila_jogador[pokemon_lutando].nivel+1);
+
+        texto_oponente+="\n\nPokemon do oponente: \n" + poke_cat[pokemon_selvagem.posicao].nome;
+        texto_oponente+="\nHP:" + QString::number(pokemon_selvagem.hp);
+        texto_oponente+="\nNivel: " + QString::number(pokemon_selvagem.nivel+1);
+
+        ui->nome_poke_7->setText(texto_batalha);
+        ui->nome_poke_8->setText(texto_oponente);
+        if(estado_boneco==65 && pokemon_selvagem.hp<=0)
+        {
+            modo_de_jogo=0;
+            inicializa_mapa();
+            ui->nome_poke_7->setVisible(0);
+            ui->nome_poke_8->setVisible(0);
+            ui->victory->setVisible(0);
+        }
+        else if(pokemon_selvagem.hp<=0)
+        {
+            texto_batalha = "PARABENS, VOCE VENCEU!\nAperte A para continuar";
+            texto_oponente = "";
+            ui->nome_poke_7->setText(texto_batalha);
+            ui->nome_poke_8->setText(texto_oponente);
+            pokemon_lutando = 0;
+        }
+
+        if(estado_boneco==65 && mochila_jogador[1].hp<=0)
+        {
+            modo_de_jogo=0;
+            inicializa_mapa();
+            ui->nome_poke_7->setVisible(0);
+            ui->nome_poke_8->setVisible(0);
+            ui->victory->setVisible(0);
+        }
+        else if(mochila_jogador[1].hp<=0)
+        {
+            texto_batalha = "Que pena, voce perdeu!\nAperte A para continuar";
+            texto_oponente = "";
+            ui->nome_poke_7->setText(texto_batalha);
+            ui->nome_poke_8->setText(texto_oponente);
+            pokemon_lutando = 0;
+        }
+
+    }
+
 }
 
 MainWindow::~MainWindow()
@@ -75,7 +146,7 @@ void MainWindow::keyPressEvent(QKeyEvent *e) //Tecla pressionada
         pokemon_spr_3->set_imagem_y(poke_cat[mochila_jogador[1].posicao].imagem_y);
         pokemon_spr_3->atualiza_imagem();
     }
-    else if(e->key()==84 && mochila_jogador[0].id>0 && mochila_jogador[1].id>0)
+    else if(e->key()==84 && mochila_jogador[0].id>0 && mochila_jogador[1].id>0 && modo_de_jogo==0)
     {
         mapa_ativado=1;
         ui->nome_poke->setVisible(0);
@@ -84,6 +155,10 @@ void MainWindow::keyPressEvent(QKeyEvent *e) //Tecla pressionada
         ui->nome_poke_4->setVisible(0);
         ui->nome_poke_5->setVisible(0);
         ui->nome_poke_6->setVisible(0);
+    }
+    if(modo_de_jogo && e->key()==71)
+    {
+        calcula_danos();
     }
 
 }
@@ -96,3 +171,28 @@ void MainWindow::keyReleaseEvent(QKeyEvent *e) //Tecla solta
     }
 }
 
+void MainWindow::calcula_danos()
+{
+    pokemon_selvagem.hp-=mochila_jogador[pokemon_lutando].nivel+1;
+    mochila_jogador[pokemon_lutando].hp-=pokemon_selvagem.nivel+1;
+
+    if(pokemon_selvagem.hp<=0)
+    {
+        ui->victory->setVisible(1);
+        ui->victory->setStyleSheet("border-image: url(:/new/prefix1/recursos/sprites/battle/win.png);");
+    }
+
+    if(mochila_jogador[0].hp<=0)
+    {
+        pokemon_lutando = 1;
+        pokemon_spr_4->set_imagem_x(poke_cat[mochila_jogador[pokemon_lutando].posicao].imagem_x);
+        pokemon_spr_4->set_imagem_y(poke_cat[mochila_jogador[pokemon_lutando].posicao].imagem_y);
+        pokemon_spr_4->atualiza_imagem();
+    }
+
+    if(mochila_jogador[1].hp<=0)
+    {
+        ui->victory->setVisible(1);
+        ui->victory->setStyleSheet("border-image: url(:/new/prefix1/recursos/sprites/battle/lose.png);");
+    }
+}

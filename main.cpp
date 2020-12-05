@@ -43,6 +43,8 @@ int main(int argc, char *argv[])
     pokemon_spr = new QPokemon(&w);
     pokemon_spr_2 = new QPokemon(&w);
     pokemon_spr_3 = new QPokemon(&w);
+    pokemon_spr_4 = new QPokemon(&w);
+    pokemon_spr_5 = new QPokemon(&w);
 
     boneco = new sprite(&w,0); //sprite
 
@@ -177,14 +179,41 @@ void inicializa_mapa()
     cena->removeItem(pokemon_spr);
     cena->removeItem(pokemon_spr_2);
     cena->removeItem(pokemon_spr_3);
+    cena->removeItem(pokemon_spr_4);
+    cena->removeItem(pokemon_spr_5);
     boneco->setPos(200,200);
 }
 
 void modo_de_batalha()
 {
+    pokemon_selvagem.posicao = rand()%25;
     modo_de_jogo = 1;
     QPixmap fundo;
-    fundo.load(":/new/prefix1/recursos/sprites/battle/castle_2.jpg");
+    fundo.load(":/new/prefix1/recursos/sprites/battle/castle_2.png");
     cena->removeItem(boneco);
     cena->setBackgroundBrush(fundo);
+
+    cena->addItem(pokemon_spr_4);
+    pokemon_spr_4->setPos(168,500);
+
+    cena->addItem(pokemon_spr_5);
+    pokemon_spr_5->setPos(644,540);
+
+    pokemon_spr_4->set_imagem_x(poke_cat[mochila_jogador[0].posicao].imagem_x);
+    pokemon_spr_4->set_imagem_y(poke_cat[mochila_jogador[0].posicao].imagem_y);
+    pokemon_spr_4->atualiza_imagem();
+
+    pokemon_spr_5->set_imagem_x(poke_cat[pokemon_selvagem.posicao].imagem_x);
+    pokemon_spr_5->set_imagem_y(poke_cat[pokemon_selvagem.posicao].imagem_y);
+    pokemon_spr_5->atualiza_imagem();
+
+
+
+    pokemon_selvagem.nivel = abs((rand()%2)%2==0 ? mochila_jogador[0].nivel+rand()%2 : mochila_jogador[0].nivel-rand()%2);
+
+    mochila_jogador[0].hp = 10 + mochila_jogador[0].nivel*2;
+    mochila_jogador[1].hp = 10 + mochila_jogador[1].nivel*2;
+    pokemon_selvagem.hp = 10 + pokemon_selvagem.nivel*2;
+
 }
+

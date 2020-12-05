@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QKeyEvent>
 #include <QGraphicsScene>
+#include <unistd.h>
 #include "sprite.h"
 #include "pokemons.h"
 #include "qpokemon.h"
@@ -16,6 +17,7 @@
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
+
 
 class MainWindow : public QMainWindow
 {
@@ -27,6 +29,8 @@ public:
     void set_scene(QGraphicsScene &a);
     void keyPressEvent(QKeyEvent *e);
     void keyReleaseEvent(QKeyEvent *e);
+    void calcula_danos();
+
 protected:
 
 public slots:

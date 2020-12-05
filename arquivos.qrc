@@ -12,6 +12,11 @@
         <file>recursos/sprites/battle/background.jpg</file>
         <file>recursos/sprites/battle/bases.png</file>
         <file>recursos/sprites/battle/castle.png</file>
-        <file>recursos/sprites/battle/castle_2.jpg</file>
+        <file>recursos/sprites/battle/vida.png</file>
+        <file>recursos/sprites/battle/barra_de_vida.png</file>
+        <file>recursos/sprites/battle/castle_2.png</file>
+        <file>recursos/sprites/battle/win.png</file>
+        <file>recursos/sprites/battle/lose.png</file>
+        <file>recursos/sprites/battle/draw.png</file>
     </qresource>
 </RCC>

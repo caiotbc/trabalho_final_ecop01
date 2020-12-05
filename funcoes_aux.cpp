@@ -1,6 +1,6 @@
 #include "funcoes_aux.h"
 
-#define DIFICULDADE 20
+#define DIFICULDADE 10
 
 
 bool ta_na_hora()
