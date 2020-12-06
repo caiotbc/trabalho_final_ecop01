@@ -3,10 +3,25 @@
 
 #define VELOCIDADE_ANIMACAO 100
 #define VELOCIDADE_PERSONAGEM 1
+#define QTD_POKEMONS 30
 
 QGraphicsScene *cena;
-extern pokemon_catalogo_t poke_cat[25];
+extern pokemon_catalogo_t poke_cat[QTD_POKEMONS];
 pokedex mochila_jogador[2];
+
+int binarySearch(pokemon_catalogo_t arr[], int p, int r, int num)
+{
+   if (p <= r) {
+      int mid = (p + r)/2;
+      if (arr[mid].id == num)
+      return mid ;
+      if (arr[mid].id > num)
+      return binarySearch(arr, p, mid-1, num);
+      if (arr[mid].id > num)
+      return binarySearch(arr, mid+1, r, num);
+   }
+   return -1;
+}
 
 int main(int argc, char *argv[])
 {
@@ -100,6 +115,16 @@ void loop_principal()
     {
         qDebug()<<"VAMO LUTA";
         modo_de_batalha();
+    }
+    for(int i = 0 ; i < 2 ; i++)
+    {
+        if(mochila_jogador[i].nivel>=poke_cat[mochila_jogador[i].posicao].nivel_evolui && poke_cat[mochila_jogador[i].posicao].id_evolui!=-1)
+        {
+            qDebug()<<"evoluiu";
+            mochila_jogador[i].id=poke_cat[mochila_jogador[i].posicao].id_evolui;
+            qDebug()<<binarySearch(poke_cat,0,QTD_POKEMONS,poke_cat[mochila_jogador[i].posicao].id_evolui);
+            mochila_jogador[i].posicao++;
+        }
     }
 }
 
@@ -209,7 +234,7 @@ void modo_de_batalha()
 
 
 
-    pokemon_selvagem.nivel = abs((rand()%2)%2==0 ? mochila_jogador[0].nivel+rand()%2 : mochila_jogador[0].nivel-rand()%2);
+    //pokemon_selvagem.nivel = abs((rand()%2)%2==0 ? mochila_jogador[0].nivel+rand()%2 : mochila_jogador[0].nivel-rand()%2);
 
     mochila_jogador[0].hp = 10 + mochila_jogador[0].nivel*2;
     mochila_jogador[1].hp = 10 + mochila_jogador[1].nivel*2;

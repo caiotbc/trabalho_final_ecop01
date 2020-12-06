@@ -41,7 +41,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->nome_poke_7->setStyleSheet("color : rgb(0, 0, 0);\nfont: 12pt \"Pokemon Generation 1\";");
     ui->nome_poke_8->setStyleSheet("color : rgb(0, 0, 0);\nfont: 12pt \"Pokemon Generation 1\";");
     ui->health_1->setStyleSheet("border-image: url(:/new/prefix1/recursos/sprites/battle/vida.png);");
+    ui->health_2->setStyleSheet("border-image: url(:/new/prefix1/recursos/sprites/battle/vida.png);");
+    ui->health_1->setGeometry(160,405,100,40);
+    ui->health_2->setGeometry(160,405,100,40);
     ui->health_1->setVisible(0);
+    ui->health_2->setVisible(0);
     ui->nome_poke_7->setVisible(0);
     ui->nome_poke_8->setVisible(0);
     ui->victory->setVisible(0);
@@ -57,8 +61,13 @@ void MainWindow::temporizador()
     if(modo_de_jogo==1)
     {
         ui->health_1->setVisible(1);
-        ui->health_1->setFixedSize(500,40);
+        ui->health_2->setVisible(1);
 
+        int vida_total = 10 + mochila_jogador[pokemon_lutando].nivel*2;
+        int vida_total_2 = 10 + pokemon_selvagem.nivel*2;
+
+        ui->health_1->setGeometry(177-40*((double)mochila_jogador[pokemon_lutando].hp/(double)vida_total),405,100*((double)mochila_jogador[pokemon_lutando].hp/(double)vida_total),40);
+        ui->health_2->setGeometry(637-40*((double)pokemon_selvagem.hp/(double)vida_total_2),446,100*((double)pokemon_selvagem.hp/(double)vida_total_2),40);
         ui->nome_poke_7->setVisible(1);
         ui->nome_poke_8->setVisible(1);
 
@@ -81,6 +90,7 @@ void MainWindow::temporizador()
             ui->nome_poke_7->setVisible(0);
             ui->nome_poke_8->setVisible(0);
             ui->victory->setVisible(0);
+            mochila_jogador[pokemon_lutando].nivel++;
         }
         else if(pokemon_selvagem.hp<=0)
         {
