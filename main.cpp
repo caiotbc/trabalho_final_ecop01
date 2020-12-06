@@ -11,20 +11,6 @@ pokedex mochila_jogador[2];
 QString bonus_mapa;
 QString tipos[18] = {"BUG","DARK","DRAGON","ELECTRIC","FAIRY","FIGHT","FIRE","FLYING","GHOST","GRASS","GROUND","ICE","NORMAL","POISON","PSYCHIC","ROCK","STEEL","WATER"};
 
-int binarySearch(pokemon_catalogo_t arr[], int p, int r, int num)
-{
-   if (p <= r) {
-      int mid = (p + r)/2;
-      if (arr[mid].id == num)
-      return mid ;
-      if (arr[mid].id > num)
-      return binarySearch(arr, p, mid-1, num);
-      if (arr[mid].id > num)
-      return binarySearch(arr, mid+1, r, num);
-   }
-   return -1;
-}
-
 int main(int argc, char *argv[])
 {
     srand(time(NULL));
@@ -125,36 +111,9 @@ void loop_principal()
         {
             qDebug()<<"evoluiu";
             mochila_jogador[i].id=poke_cat[mochila_jogador[i].posicao].id_evolui;
-            qDebug()<<binarySearch(poke_cat,0,QTD_POKEMONS,poke_cat[mochila_jogador[i].posicao].id_evolui);
+
             mochila_jogador[i].posicao++;
         }
-    }
-}
-
-
-void checa_posicao_valida(int a)
-{
-    cor_chao.setRgb(mapa_obstaculos.pixel(x_1,y_1));
-    qDebug()<<cor_chao.value();
-    while (cor_chao.value()==0) //Detecta parede
-    {
-        switch (a)
-        {
-            case 1:
-            y_1-=VELOCIDADE_PERSONAGEM;
-            break;
-            case 2:
-            y_1+=VELOCIDADE_PERSONAGEM;
-            break;
-            case 3:
-            x_1+=VELOCIDADE_PERSONAGEM;
-            break;
-            case 4:
-            x_1-=VELOCIDADE_PERSONAGEM;
-            break;
-        }
-        cor_chao.setRgb(mapa_obstaculos.pixel(x_1,y_1));
-        qDebug()<<cor_chao.value();
     }
 }
 
@@ -198,6 +157,44 @@ void anda_jogador()
     boneco->setPos(x_1,y_1);
 }
 
+
+void checa_posicao_valida(int a)
+{
+    cor_chao.setRgb(mapa_obstaculos.pixel(x_1,y_1));
+    qDebug()<<cor_chao.value();
+    while (cor_chao.value()==0) //Detecta parede
+    {
+        switch (a)
+        {
+            case 1:
+            y_1-=VELOCIDADE_PERSONAGEM;
+            break;
+            case 2:
+            y_1+=VELOCIDADE_PERSONAGEM;
+            break;
+            case 3:
+            x_1+=VELOCIDADE_PERSONAGEM;
+            break;
+            case 4:
+            x_1-=VELOCIDADE_PERSONAGEM;
+            break;
+        }
+        cor_chao.setRgb(mapa_obstaculos.pixel(x_1,y_1));
+        qDebug()<<cor_chao.value();
+    }
+    while((y_1>660) || (y_1<0)){
+        switch (a)
+        {
+            case 1:
+            y_1-=VELOCIDADE_PERSONAGEM;
+            break;
+            case 2:
+            y_1+=VELOCIDADE_PERSONAGEM;
+            break;
+        }
+    }
+}
+
 void inicializa_mapa()
 {
     QPixmap fundo;
@@ -237,11 +234,11 @@ void modo_de_batalha()
 
 
 
-    //pokemon_selvagem.nivel = abs((rand()%2)%2==0 ? mochila_jogador[0].nivel+rand()%2 : mochila_jogador[0].nivel-rand()%2);
+    pokemon_selvagem.nivel = abs((rand()%2)==0 ? mochila_jogador[0].nivel+rand()%3 : mochila_jogador[0].nivel-rand()%2);
 
     mochila_jogador[0].hp = 10 + mochila_jogador[0].nivel*2;
     mochila_jogador[1].hp = 10 + mochila_jogador[1].nivel*2;
-    pokemon_selvagem.hp = 10 + pokemon_selvagem.nivel*2;
+    pokemon_selvagem.hp = 12 + pokemon_selvagem.nivel*2;
 
     if(bonus_mapa=="")
     {
