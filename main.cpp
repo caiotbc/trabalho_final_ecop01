@@ -8,6 +8,8 @@
 QGraphicsScene *cena;
 extern pokemon_catalogo_t poke_cat[QTD_POKEMONS];
 pokedex mochila_jogador[2];
+QString bonus_mapa;
+QString tipos[18] = {"BUG","DARK","DRAGON","ELECTRIC","FAIRY","FIGHT","FIRE","FLYING","GHOST","GRASS","GROUND","ICE","NORMAL","POISON","PSYCHIC","ROCK","STEEL","WATER"};
 
 int binarySearch(pokemon_catalogo_t arr[], int p, int r, int num)
 {
@@ -114,6 +116,7 @@ void loop_principal()
     if(cor_chao.value()==128 && andando && ta_na_hora() && modo_de_jogo==0)
     {
         qDebug()<<"VAMO LUTA";
+        bonus_mapa = "";
         modo_de_batalha();
     }
     for(int i = 0 ; i < 2 ; i++)
@@ -239,6 +242,18 @@ void modo_de_batalha()
     mochila_jogador[0].hp = 10 + mochila_jogador[0].nivel*2;
     mochila_jogador[1].hp = 10 + mochila_jogador[1].nivel*2;
     pokemon_selvagem.hp = 10 + pokemon_selvagem.nivel*2;
+
+    if(bonus_mapa=="")
+    {
+        int chance = rand()%18;
+        bonus_mapa = tipos[chance];
+        if(poke_cat[pokemon_selvagem.posicao].tipo==bonus_mapa)
+            pokemon_selvagem.hp+=10;
+        if(poke_cat[mochila_jogador[0].posicao].tipo==bonus_mapa)
+            mochila_jogador[0].hp+=10;
+        if(poke_cat[mochila_jogador[1].posicao].tipo==bonus_mapa)
+            mochila_jogador[1].hp+=10;
+    }
 
 }
 

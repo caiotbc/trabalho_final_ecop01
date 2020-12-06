@@ -17,6 +17,9 @@ extern QPokemon *pokemon_spr_5;
 extern int modo_de_jogo;
 extern pokedex pokemon_selvagem;
 int pokemon_lutando = 0;
+
+extern QString bonus_mapa;
+
 void inicializa_mapa();
 
 void MainWindow::set_scene(QGraphicsScene &a)
@@ -40,6 +43,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->nome_poke_6->setStyleSheet("color : rgb(255, 255, 255);\nfont: 14pt \"Pokemon Generation 1\";");
     ui->nome_poke_7->setStyleSheet("color : rgb(0, 0, 0);\nfont: 12pt \"Pokemon Generation 1\";");
     ui->nome_poke_8->setStyleSheet("color : rgb(0, 0, 0);\nfont: 12pt \"Pokemon Generation 1\";");
+    ui->nome_poke_9->setStyleSheet("color : rgb(0, 0, 0);\nfont: 9pt \"Pokemon Generation 1\";");
     ui->health_1->setStyleSheet("border-image: url(:/new/prefix1/recursos/sprites/battle/vida.png);");
     ui->health_2->setStyleSheet("border-image: url(:/new/prefix1/recursos/sprites/battle/vida.png);");
     ui->health_1->setGeometry(160,405,100,40);
@@ -48,6 +52,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->health_2->setVisible(0);
     ui->nome_poke_7->setVisible(0);
     ui->nome_poke_8->setVisible(0);
+    ui->nome_poke_9->setVisible(0);
     ui->victory->setVisible(0);
 }
 
@@ -63,21 +68,25 @@ void MainWindow::temporizador()
         ui->health_1->setVisible(1);
         ui->health_2->setVisible(1);
 
-        int vida_total = 10 + mochila_jogador[pokemon_lutando].nivel*2;
-        int vida_total_2 = 10 + pokemon_selvagem.nivel*2;
+        int vida_total = 10 + mochila_jogador[pokemon_lutando].nivel*2 + (poke_cat[mochila_jogador[pokemon_lutando].posicao].tipo==bonus_mapa ? 10 : 0);
+        int vida_total_2 = 10 + pokemon_selvagem.nivel*2 + (poke_cat[pokemon_selvagem.posicao].tipo==bonus_mapa ? 10 : 0);
 
         ui->health_1->setGeometry(177-40*((double)mochila_jogador[pokemon_lutando].hp/(double)vida_total),405,100*((double)mochila_jogador[pokemon_lutando].hp/(double)vida_total),40);
         ui->health_2->setGeometry(637-40*((double)pokemon_selvagem.hp/(double)vida_total_2),446,100*((double)pokemon_selvagem.hp/(double)vida_total_2),40);
         ui->nome_poke_7->setVisible(1);
         ui->nome_poke_8->setVisible(1);
+        ui->nome_poke_9->setVisible(1);
 
+        ui->nome_poke_9->setText("Bonus de mapa para o tipo " + bonus_mapa);
         QString texto_batalha, texto_oponente;
         texto_batalha = "Hora da batalha! Aperte G para atacar\n";
         texto_batalha+="\nSeu Pokemon: \n" + poke_cat[mochila_jogador[pokemon_lutando].posicao].nome;
+        texto_batalha+=" (" + poke_cat[mochila_jogador[pokemon_lutando].posicao].tipo + ")";
         texto_batalha+="\nHP:" + QString::number(mochila_jogador[pokemon_lutando].hp);
         texto_batalha+="\nNivel: " + QString::number(mochila_jogador[pokemon_lutando].nivel+1);
 
         texto_oponente+="\n\nPokemon do oponente: \n" + poke_cat[pokemon_selvagem.posicao].nome;
+        texto_oponente+=" (" + poke_cat[pokemon_selvagem.posicao].tipo + ")";
         texto_oponente+="\nHP:" + QString::number(pokemon_selvagem.hp);
         texto_oponente+="\nNivel: " + QString::number(pokemon_selvagem.nivel+1);
 
@@ -89,6 +98,9 @@ void MainWindow::temporizador()
             inicializa_mapa();
             ui->nome_poke_7->setVisible(0);
             ui->nome_poke_8->setVisible(0);
+            ui->nome_poke_9->setVisible(0);
+            ui->health_1->setVisible(0);
+            ui->health_2->setVisible(0);
             ui->victory->setVisible(0);
             mochila_jogador[pokemon_lutando].nivel++;
         }
@@ -107,6 +119,9 @@ void MainWindow::temporizador()
             inicializa_mapa();
             ui->nome_poke_7->setVisible(0);
             ui->nome_poke_8->setVisible(0);
+            ui->nome_poke_9->setVisible(0);
+            ui->health_1->setVisible(0);
+            ui->health_2->setVisible(0);
             ui->victory->setVisible(0);
         }
         else if(mochila_jogador[1].hp<=0)
