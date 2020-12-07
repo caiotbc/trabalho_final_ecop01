@@ -15,6 +15,7 @@ void loop_principal();
 void checa_posicao_valida(int a);
 void inicializa_mapa();
 void modo_de_batalha();
+bool ta_na_hora();
 
 
 int x_1; //posição do personagem no mapa
@@ -34,7 +35,6 @@ int estado_boneco;
 int andando; //variável para saber se o personagem está andando
 int mapa_ativado;
 int poke_atual;
-int evolucao_poke;
 int modo_de_jogo;
 
 pokedex pokemon_selvagem;

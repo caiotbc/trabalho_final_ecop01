@@ -38,7 +38,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->nome_poke  ->setStyleSheet("color : rgb(255, 255, 255);\nfont: 14pt \"Pokemon Generation 1\";");
     ui->nome_poke_2->setStyleSheet("color : rgb(255, 255, 255);\nfont: 14pt \"Pokemon Generation 1\";");
     ui->nome_poke_3->setStyleSheet("color : rgb(255, 255, 255);\nfont: 14pt \"Pokemon Generation 1\";");
-    ui->nome_poke_4->setStyleSheet("color : rgb(255, 255, 255);\nfont: 14pt \"Pokemon Generation 1\";");
     ui->nome_poke_5->setStyleSheet("color : rgb(255, 255, 255);\nfont: 14pt \"Pokemon Generation 1\";");
     ui->nome_poke_6->setStyleSheet("color : rgb(255, 255, 255);\nfont: 14pt \"Pokemon Generation 1\";");
     ui->nome_poke_7->setStyleSheet("color : rgb(0, 0, 0);\nfont: 12pt \"Pokemon Generation 1\";");
@@ -62,7 +61,6 @@ void MainWindow::temporizador()
     ui->nome_poke->setText(poke_cat[poke_atual].nome);
     ui->nome_poke_2->setText(poke_cat[poke_atual].tipo);
     ui->nome_poke_3->setText(QString::number(poke_cat[poke_atual].geracao));
-    ui->nome_poke_4->setText(QString::number(evolucao_poke));
     if(modo_de_jogo==1)
     {
         ui->health_1->setVisible(1);
@@ -194,7 +192,6 @@ void MainWindow::keyPressEvent(QKeyEvent *e) //Tecla pressionada
         ui->nome_poke->setVisible(0);
         ui->nome_poke_2->setVisible(0);
         ui->nome_poke_3->setVisible(0);
-        ui->nome_poke_4->setVisible(0);
         ui->nome_poke_5->setVisible(0);
         ui->nome_poke_6->setVisible(0);
     }

@@ -15,7 +15,7 @@ typedef struct
   int geracao;
   int nivel_evolui;
   int id_evolui;
-  int imagem_x;
+   int imagem_x;
   int imagem_y;
 }pokemon_catalogo_t;
 

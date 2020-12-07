@@ -1,9 +1,9 @@
 #include "main.h"
-#include "funcoes_aux.h"
 
 #define VELOCIDADE_ANIMACAO 100
 #define VELOCIDADE_PERSONAGEM 1
 #define QTD_POKEMONS 30
+#define DIFICULDADE 10
 
 QGraphicsScene *cena;
 extern pokemon_catalogo_t poke_cat[QTD_POKEMONS];
@@ -72,7 +72,7 @@ int main(int argc, char *argv[])
 
 void loop_principal()
 {
-    qDebug()<<estado_boneco;
+
     if(mapa_ativado)
     {
         mapa_ativado=0;
@@ -80,20 +80,6 @@ void loop_principal()
     }
     else
     {
-        if(poke_atual<0)
-            poke_atual=0;
-        switch (poke_cat[poke_atual].nivel_evolui)
-        {
-            case 10:
-                evolucao_poke = 1;
-                break;
-            case 20:
-                evolucao_poke = 2;
-                break;
-            case -1:
-                evolucao_poke = 3;
-                break;
-        }
         pokemon_spr->set_imagem_x(poke_cat[poke_atual].imagem_x);
         pokemon_spr->set_imagem_y(poke_cat[poke_atual].imagem_y);
         pokemon_spr->atualiza_imagem();
@@ -101,7 +87,7 @@ void loop_principal()
     anda_jogador();
     if(cor_chao.value()==128 && andando && ta_na_hora() && modo_de_jogo==0)
     {
-        qDebug()<<"VAMO LUTA";
+        //qDebug()<<"VAMO LUTA";
         bonus_mapa = "";
         modo_de_batalha();
     }
@@ -109,7 +95,7 @@ void loop_principal()
     {
         if(mochila_jogador[i].nivel>=poke_cat[mochila_jogador[i].posicao].nivel_evolui && poke_cat[mochila_jogador[i].posicao].id_evolui!=-1)
         {
-            qDebug()<<"evoluiu";
+            //qDebug()<<"evoluiu";
             mochila_jogador[i].id=poke_cat[mochila_jogador[i].posicao].id_evolui;
 
             mochila_jogador[i].posicao++;
@@ -161,7 +147,7 @@ void anda_jogador()
 void checa_posicao_valida(int a)
 {
     cor_chao.setRgb(mapa_obstaculos.pixel(x_1,y_1));
-    qDebug()<<cor_chao.value();
+    //qDebug()<<cor_chao.value();
     while (cor_chao.value()==0) //Detecta parede
     {
         switch (a)
@@ -180,7 +166,7 @@ void checa_posicao_valida(int a)
             break;
         }
         cor_chao.setRgb(mapa_obstaculos.pixel(x_1,y_1));
-        qDebug()<<cor_chao.value();
+        //qDebug()<<cor_chao.value();
     }
     while((y_1>660) || (y_1<0)){
         switch (a)
@@ -209,9 +195,14 @@ void inicializa_mapa()
     boneco->setPos(200,200);
 }
 
+bool ta_na_hora()
+{
+    return rand()%100<(DIFICULDADE/5);
+}
+
 void modo_de_batalha()
 {
-    pokemon_selvagem.posicao = rand()%25;
+    pokemon_selvagem.posicao = rand()%QTD_POKEMONS;
     modo_de_jogo = 1;
     QPixmap fundo;
     fundo.load(":/new/prefix1/recursos/sprites/battle/castle_2.png");
@@ -238,7 +229,7 @@ void modo_de_batalha()
 
     mochila_jogador[0].hp = 10 + mochila_jogador[0].nivel*2;
     mochila_jogador[1].hp = 10 + mochila_jogador[1].nivel*2;
-    pokemon_selvagem.hp = 12 + pokemon_selvagem.nivel*2;
+    pokemon_selvagem.hp = ((mochila_jogador[0].hp + mochila_jogador[1].hp)/3) + 10 + pokemon_selvagem.nivel*2;
 
     if(bonus_mapa=="")
     {
