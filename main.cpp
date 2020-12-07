@@ -23,6 +23,7 @@ int binarySearch(pokemon_catalogo_t arr[], int p, int r, int num)
       return binarySearch(arr, mid+1, r, num);
    }
    return -1;
+
 }
 
 int main(int argc, char *argv[])
@@ -235,9 +236,7 @@ void modo_de_batalha()
     pokemon_spr_5->set_imagem_y(poke_cat[pokemon_selvagem.posicao].imagem_y);
     pokemon_spr_5->atualiza_imagem();
 
-
-
-    //pokemon_selvagem.nivel = abs((rand()%2)%2==0 ? mochila_jogador[0].nivel+rand()%2 : mochila_jogador[0].nivel-rand()%2);
+    pokemon_selvagem.nivel = abs((rand()%2)%2==0 ? mochila_jogador[0].nivel+rand()%2 : mochila_jogador[0].nivel-rand()%2);
 
     mochila_jogador[0].hp = 10 + mochila_jogador[0].nivel*2;
     mochila_jogador[1].hp = 10 + mochila_jogador[1].nivel*2;

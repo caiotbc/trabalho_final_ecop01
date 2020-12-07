@@ -51,7 +51,3 @@ void carrega_pokemons()
     }
 }
 
-void teste()
-{
-
-}

@@ -92,6 +92,7 @@ void MainWindow::temporizador()
 
         ui->nome_poke_7->setText(texto_batalha);
         ui->nome_poke_8->setText(texto_oponente);
+
         if(estado_boneco==65 && pokemon_selvagem.hp<=0)
         {
             modo_de_jogo=0;
@@ -185,7 +186,6 @@ void MainWindow::keyPressEvent(QKeyEvent *e) //Tecla pressionada
     {
         calcula_danos();
     }
-
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *e) //Tecla solta

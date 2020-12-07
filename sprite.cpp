@@ -27,6 +27,7 @@ void sprite::atualiza_imagem()
    {
        imagem_linha = 0;
    }
+
    this->update(-largura/2,-altura/2,largura,altura);
 }
 
