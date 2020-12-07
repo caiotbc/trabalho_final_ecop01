@@ -6,7 +6,7 @@ int conecta_banco_de_dados()
 {
     QSqlDatabase db;
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("../pokemon_caio_e_lucas/recursos/data/pokedex.db");
+    db.setDatabaseName("./pokedex.db");
     if (!db.open())
     {
         qDebug() << db.lastError().text();
