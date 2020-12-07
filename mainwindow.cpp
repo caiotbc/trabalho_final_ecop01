@@ -99,7 +99,7 @@ void MainWindow::temporizador()
             inicializa_mapa();
             ui->nome_poke_7->setVisible(0);
             ui->nome_poke_8->setVisible(0);
-
+            ui->nome_poke_9->setVisible(0);
             ui->health_1->setVisible(0);
             ui->health_2->setVisible(0);
             ui->victory->setVisible(0);
@@ -118,7 +118,7 @@ void MainWindow::temporizador()
             texto_oponente = "";
             ui->nome_poke_7->setText(texto_batalha);
             ui->nome_poke_8->setText(texto_oponente);
-            ui->nome_poke_9->setVisible(0);
+            ui->nome_poke_9->setVisible(1);
             pokemon_lutando = 0;
         }
 
@@ -147,7 +147,7 @@ void MainWindow::temporizador()
             texto_oponente = "";
             ui->nome_poke_7->setText(texto_batalha);
             ui->nome_poke_8->setText(texto_oponente);
-            ui->nome_poke_9->setVisible(0);
+            ui->nome_poke_9->setVisible(1);
             pokemon_lutando = 0;
         }
 
