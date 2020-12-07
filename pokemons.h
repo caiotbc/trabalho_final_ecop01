@@ -1,5 +1,14 @@
 #ifndef POKEMONS_H
 #define POKEMONS_H
+
+#ifdef _WIN32
+#define banco_de_dados "C:\\Users\\Usuario\\Documents\\GitHub\\trabalho_final_ecop01\\recursos\\data\\pokedex.db"
+#endif
+
+#ifdef linux
+#define banco_de_dados "./pokedex.db"
+#endif
+
 #include <QString>
 #include <QSqlQueryModel>
 #include <QSqlQuery>
