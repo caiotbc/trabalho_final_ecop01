@@ -1,6 +1,7 @@
 ### Trabalho final da disciplina de Técnicas de Programação
 #### Universidade Federal de Itajubá
-
+Alunos: Caio Tácito Borges da Costa e Lucas José Nunes Martins
+Professor: Gabriel Cirac Mendes Souza
 
 Créditos dos sprites:
 
